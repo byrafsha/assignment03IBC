@@ -8,20 +8,21 @@ import (
 	a2 "github.com/rafshamazhar/assignment02IBC"
 )
 var Quorum int
-var chainHead *a2.Block
-storeMap:= make(map[string]net.Conn)
-channel1 := make(chan net.Conn)
-channel2:= make(chan string)
+var ChainHead *a2.Block
+StoreMap:= make(map[string]net.Conn)
+Channel1 := make(chan net.Conn)
+Channel2:= make(chan string)
+
 	//[]byte, 4096)
 
 func handleConnection(c net.Conn, node string, listeningAddress string){
 	if node=="satoshi" {
 		//store connection&address
 		//receive listening port on c first
-		storemap[ReadString(c)]=c
+		Storemap[ReadString(c)]=c
 
 		//mine new block
-		chainHead = a2.InsertBlock("", "", "Satoshi", 0, chainHead)
+		ChainHead = a2.InsertBlock("", "", "Satoshi", 0, ChainHead)
 
 		//print address
 		log.Println("Satoshi: Client connected at ". c.RemoteAddr())
@@ -53,7 +54,7 @@ func StartListening(listeningAddress string, node string) {
 //WaitForQuorum()
 func WaitForQuorum() {
 	if len(storeMap<Quorum){
-		x,y:=<-channel2,<-channel2
+		x,y:=<-Channel2,<-Channel2
 	}
 }
 
@@ -85,14 +86,14 @@ func ReceiveChain(connection net.Conn) *Block {
 
 
 func WriteString(connection net.Conn, listeningAddress string) {
-	channel1 <- connection
-	channel2 <- listeningAddress
+	Channel1 <- connection
+	Channel2 <- listeningAddress
 }
 
 
 func ReadString(connection net.Conn) string {
-	x := <-channel1
-	y := <-channel1
+	x := <-Channel1
+	y := <-Channel1
 	if x==connection{
 		return y
 	}
