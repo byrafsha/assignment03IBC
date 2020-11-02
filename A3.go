@@ -9,7 +9,7 @@ import (
 )
 var Quorum int
 var chainHead *a2.Block
-storeMap:=make(map[string]net.Conn)
+storeMap:= make(map[string]net.Conn)
 channel1 := make(chan net.Conn)
 channel2:= make(chan string)
 	//[]byte, 4096)
@@ -61,7 +61,7 @@ func WaitForQuorum() {
 func SendChainandConnInfo() {
 
 	//blockchain using gob
-	for _, val in range(storeMap) {
+	for _, val := range storeMap {
 		blockchainEnc := gob.NewEncoder(val) //loop through all c conn
 		err:= blockchainEnc.Encode(chainHead)
 		if err != nil {
