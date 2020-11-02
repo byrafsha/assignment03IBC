@@ -9,7 +9,7 @@ import (
 )
 var Quorum int
 var chainHead *a2.Block
-storeMap:= make(map[string]net.Conn)
+var storeMap = make(map[string]net.Conn)
 
 func handleConnection(c net.Conn, node string, listeningAddress string){
 	if node=="satoshi" {
