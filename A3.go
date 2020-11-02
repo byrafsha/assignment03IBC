@@ -10,10 +10,6 @@ import (
 var Quorum int
 var chainHead *a2.Block
 storeMap:= make(map[string]net.Conn)
-//channel1 := make(chan net.Conn)
-//channel2:= make(chan string)
-
-	//[]byte, 4096)
 
 func handleConnection(c net.Conn, node string, listeningAddress string){
 	if node=="satoshi" {
@@ -54,7 +50,7 @@ func StartListening(listeningAddress string, node string) {
 //WaitForQuorum()
 func WaitForQuorum() {
 	if len(storeMap<Quorum){
-		x,y:=<-channel2,<-channel2
+		
 	}
 }
 
@@ -75,6 +71,12 @@ func SendChainandConnInfo() {
 
 
 func ReceiveChain(connection net.Conn) *Block {
+	//blockchainEncoder:=gob.NewEncoder(connection)
+	//err:= blockchainEncoder.Encode()
+	//if err != nil {
+	//	log.Println(err)
+	//}
+
 	blockchainDec := gob.NewDecoder(&connection)
 	var mychain *Block
 	err := blockchainDec.Decode(&mychain)
@@ -86,15 +88,13 @@ func ReceiveChain(connection net.Conn) *Block {
 
 
 func WriteString(connection net.Conn, listeningAddress string) {
-	Channel1 <- connection
-	Channel2 <- listeningAddress
+	connection <- listeningAddress
 }
 
 
 func ReadString(connection net.Conn) string {
-	x := <-channel1
-	y := <-channel1
-	if x==connection{
-		return y
+	buffer:=make([]byte, 4096)
+	buffer = <-connection
+	return string(buffer)
 	}
 }
