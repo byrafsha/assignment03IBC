@@ -62,9 +62,9 @@ func SendChainandConnInfo() {
 
 	//blockchain using gob
 	for _, val in range(storeMap) {
-		blockchainEnc := gob.NewEncoder(&val) //loop through all c conn
+		blockchainEnc := gob.NewEncoder(val) //loop through all c conn
 		err:= blockchainEnc.Encode(chainHead)
-		if err!=nil {
+		if err != nil {
 			log.Fatal("encode error:", err)
 		}
 	}
