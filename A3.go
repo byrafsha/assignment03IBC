@@ -7,15 +7,14 @@ import (
 	"net"
 	a2 "github.com/rafshamazhar/assignment02IBC"
 )
-
-const Quorum
+var Quorum int
 var chainHead *a2.Block
-storeMap:=make(map[address]net.conn)
-channel1 := make(chan net.conn)
+storeMap:=make(map[string]net.Conn)
+channel1 := make(chan net.Conn)
 channel2:= make(chan string)
 	//[]byte, 4096)
 
-func handleConnection(c net.conn, node string, listeningAddress string){
+func handleConnection(c net.Conn, node string, listeningAddress string){
 	if node=="satoshi" {
 		//store connection&address
 		//receive listening port on c first
@@ -62,10 +61,10 @@ func WaitForQuorum() {
 func SendChainandConnInfo() {
 
 	//blockchain using gob
-	for _, val in range(storeMap){
+	for _, val in range(storeMap) {
 		blockchainEnc := gob.NewEncoder(&val) //loop through all c conn
 		err:= blockchainEnc.Encode(chainHead)
-		if err!=nil{
+		if err!=nil {
 			log.Fatal("encode error:", err)
 		}
 	}
@@ -74,7 +73,7 @@ func SendChainandConnInfo() {
 }
 
 
-func ReceiveChain(connection net.conn) *Block {
+func ReceiveChain(connection net.Conn) *Block {
 	blockchainDec := gob.NewDecoder(&connection)
 	var mychain *Block
 	err := blockchainDec.Decode(&mychain)
@@ -85,13 +84,13 @@ func ReceiveChain(connection net.conn) *Block {
 }
 
 
-func WriteString(connection net.conn, listeningAddress string) {
+func WriteString(connection net.Conn, listeningAddress string) {
 	channel1 <- connection
 	channel2 <- listeningAddress
 }
 
 
-func ReadString(connection net.conn) string {
+func ReadString(connection net.Conn) string {
 	x := <-channel1
 	y := <-channel1
 	if x==connection{
