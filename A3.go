@@ -50,7 +50,7 @@ func StartListening(listeningAddress string, node string) {
 //WaitForQuorum()
 func WaitForQuorum() {
 	if len(storeMap<Quorum){
-		
+		//block
 	}
 }
 
@@ -58,24 +58,26 @@ func WaitForQuorum() {
 func SendChainandConnInfo() {
 
 	//blockchain using gob
-	for _, val := range storeMap {
+	next:=""
+	for key, val := range storeMap {
 		blockchainEnc := gob.NewEncoder(val) //loop through all c conn
 		err:= blockchainEnc.Encode(chainHead)
 		if err != nil {
 			log.Fatal("encode error:", err)
 		}
+		
+		//connection topology
+		val <- next
+		next=key
 	}
-
-	//connection topology
+	for key, val := range storeMap {
+		val<-next
+		break
+	}
 }
 
 
 func ReceiveChain(connection net.Conn) *Block {
-	//blockchainEncoder:=gob.NewEncoder(connection)
-	//err:= blockchainEncoder.Encode()
-	//if err != nil {
-	//	log.Println(err)
-	//}
 
 	blockchainDec := gob.NewDecoder(&connection)
 	var mychain *Block
