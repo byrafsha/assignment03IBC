@@ -15,11 +15,11 @@ storeMap:= make(map[string]net.Conn)
 
 	//[]byte, 4096)
 
-func handleConnection(c net.Conn, node string){
+func handleConnection(c net.Conn, node string, listeningAddress string){
 	if node=="satoshi" {
 		//store connection&address
 		//receive listening port on c first
-		storemap[ReadString(c)]=c
+		storemap[listeningAddress]=c
 
 		//mine new block
 		chainHead = a2.InsertBlock("", "", "Satoshi", 0, chainHead)
@@ -46,7 +46,7 @@ func StartListening(listeningAddress string, node string) {
 			log.Println(err)
 			continue
 		}
-		go handleConnection(conn, node)  //storage if satoshi, only print if others
+		go handleConnection(conn, node, listeningAddress)  //storage if satoshi, only print if others
 	}
 }
 
